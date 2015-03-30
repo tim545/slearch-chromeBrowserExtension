@@ -26,10 +26,15 @@ var slearch = {
 		// Build the "pseudo search bars list" by looking for a relevant className
 		for (var i = 0; i < pseudoSearchBars.length; i++) {
 			var sb = pseudoSearchBars[i];
-			var sbAtttr = sb.className;
-			console.log(sbAtttr);
-			if (sbAtttr.match(/search/)) {
-				this.bars.push(sb);
+			var matchMaker = /search/;
+			var sbAtttr = [];
+			sbAtttr.push(sb.className);
+			sbAtttr.push(sb.ariaLabel);
+			for (var i = 0; i < sbAtttr.length; i++) {
+				var attribute = sbAtttr[i];
+				if (attribute.match(matchMaker)) {
+					this.bars.push(sb);
+				}
 			}
 		}
 	}
