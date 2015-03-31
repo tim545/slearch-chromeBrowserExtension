@@ -29,7 +29,11 @@ var slearch = {
 			var matchMaker = /search/;
 			var sbAtttr = [];
 			sbAtttr.push(sb.className);
-			sbAtttr.push(sb.ariaLabel);
+			sbAtttr.push(sb.name);
+			sbAtttr.push(sb.id);
+			sbAtttr.push(sb.placeholder);
+			if (sb.getAttribute("aria-label") != null) sbAtttr.push(sb.getAttribute("aria-label"));
+			// sbAtttr.push(sb.ariaLabel);
 			for (var i = 0; i < sbAtttr.length; i++) {
 				var attribute = sbAtttr[i];
 				if (attribute.match(matchMaker)) {
@@ -48,4 +52,4 @@ slearch.getPseudoSearchBars();
 // TODO: map the "/" so that it toggles through all the search bars found on the page
 
 // For debug. TOFO: delete
-console.log(slearch.bars);
+if (slearch.bars.length > 0) console.log("search bars on this page:", slearch.bars);
