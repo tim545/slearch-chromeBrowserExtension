@@ -26,7 +26,7 @@ var slearch = {
 		// Build the "pseudo search bars list" by looking for a relevant className
 		for (var i = 0; i < pseudoSearchBars.length; i++) {
 			var sb = pseudoSearchBars[i];
-			var matchMaker = /search/;
+			var matchMaker = /search/gi;
 			var sbAtttr = [];
 			sbAtttr.push(sb.className);
 			sbAtttr.push(sb.name);
