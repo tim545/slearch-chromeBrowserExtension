@@ -41,6 +41,17 @@ var slearch = {
 				}
 			}
 		}
+	},
+
+	// When a user pressed the '/' key we want to highlight a search bar
+	mapActions: function() {
+		window.onkeypress = function(e) {
+			console.log("keypress");
+			if (e.keyCode === "0xBF (191)" || e.charCode === "0xBF (191)" || e.key === "AKEYCODE_SLASH" || e.key === "VK_DIVIDE") {
+				slearch.bars[0].focus();
+				slearch.bars[0].scrollIntoView();
+			}
+		};
 	}
 
 };
@@ -48,8 +59,13 @@ var slearch = {
 // Find all search bars
 slearch.getHtmlSearchBars();
 slearch.getPseudoSearchBars();
+slearch.mapActions();
 
 // TODO: map the "/" so that it toggles through all the search bars found on the page
 
 // For debug. TOFO: delete
-if (slearch.bars.length > 0) console.log("search bars on this page:", slearch.bars);
+if (slearch.bars.length > 0) {
+	console.log("Slearch says: there are "+ slearch.bars.length +" search bars on this page:", slearch.bars);
+} else {
+	console.log("no search bars found");
+}
