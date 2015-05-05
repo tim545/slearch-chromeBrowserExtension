@@ -55,11 +55,11 @@ var slearch = {
 			this.bars.push(searchBar);
 		}
 		// For debug. TODO: delete
-		// if (slearch.bars.length > 0) {
-		// 	console.log("Slearch says: there are "+ slearch.bars.length +" search bars on this page:", slearch.bars);
-		// } else {
-		// 	console.log("no search bars found");
-		// }
+		if (slearch.bars.length > 0) {
+			console.log("There are "+ slearch.bars.length +" search bars on this page:", slearch.bars);
+		} else {
+			console.log("No search bars found");
+		}
 	},
 
 	// When a user pressed the '/' key we want to highlight a search bar
@@ -69,6 +69,7 @@ var slearch = {
 				// TODO: Update this to somehow toggle through search bars if focusing fails
 				slearch.bars[0].focus();
 				slearch.bars[0].scrollIntoView();
+				// window.scrollTop = (window.scrollTop - 50);
 				// TODO: remove the slash which gets added into input value
 			}
 		};
@@ -83,4 +84,13 @@ var slearch = {
 };
 
 // Initialize
-slearch.init();
+var startSlearch = function() {
+	console.log(document.readyState);
+	if (document.readyState.match(/complete|loaded/gi)) {
+		slearch.init();
+		window.clearInterval(attemptsDo);
+	}
+};
+var attemptsMax = 10;
+var attemptsCurr = 0;
+var attemptsDo = window.setInterval(startSlearch, 400);
