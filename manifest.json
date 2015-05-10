@@ -7,6 +7,7 @@
     "matches": ["http://*/*"],
     "match_about_blank": true,
     "all_frames": true,
-    "js": ["slearch.js"]
+    "js": ["slearch.js"],
+    "run_at": "document_idle"
   }]
 }

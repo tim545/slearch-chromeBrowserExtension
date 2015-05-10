@@ -26,12 +26,13 @@ var slearch = {
 		// Build the "pseudo search bars list" by looking for a relevant className
 		for (var i = 0; i < pseudoSearchBars.length; i++) {
 			var sb = pseudoSearchBars[i];
-			var matchMaker = /search/gi;
+			var matchMaker = /search|q/gi;
 			var sbAtttr = [];
 			sbAtttr.push(sb.className);
 			sbAtttr.push(sb.name);
 			sbAtttr.push(sb.id);
 			sbAtttr.push(sb.placeholder);
+			sbAtttr.push(sb.value);
 			if (sb.getAttribute("aria-label") != null) sbAtttr.push(sb.getAttribute("aria-label"));
 			for (var i = 0; i < sbAtttr.length; i++) {
 				var attribute = sbAtttr[i];
@@ -46,14 +47,15 @@ var slearch = {
 	addSearchBar: function(searchBar) {
 		var validSearchBar = true;
 		// Find if the search bar already exists
-		for (var i = 0; i < this.bars.length; i++) {
-			var bar = this.bars[i]
+		for (var i = 0; i < slearch.bars.length; i++) {
+			var bar = slearch.bars[i]
 			if (bar === searchBar) { validSearchBar = false; }
 		}
 		// Add the search bar
 		if (validSearchBar) {
-			this.bars.push(searchBar);
+			slearch.bars.push(searchBar);
 		}
+		// 
 		// For debug. TODO: delete
 		if (slearch.bars.length > 0) {
 			console.log("There are "+ slearch.bars.length +" search bars on this page:", slearch.bars);
@@ -66,11 +68,15 @@ var slearch = {
 	mapActions: function() {
 		window.onkeypress = function(e) {
 			if (e.keyCode === 47 || e.charCode === 47 || e.key === "AKEYCODE_SLASH" || e.key === "VK_DIVIDE") {
-				// TODO: Update this to somehow toggle through search bars if focusing fails
-				slearch.bars[0].focus();
-				slearch.bars[0].scrollIntoView();
-				// window.scrollTop = (window.scrollTop - 50);
-				// TODO: remove the slash which gets added into input value
+				e.preventDefault();
+				e.stopPropagation();
+				// Focus on the first search bar found
+				// (First search bar is always used as it's assumed the best)
+				var bar = slearch.bars[0];
+				if (bar === undefined) return false;
+				bar.focus();
+				// Move the window to the now focused input
+				window.scroll(0, (bar.offsetTop - 50));
 			}
 		};
 	},
@@ -79,6 +85,7 @@ var slearch = {
 		slearch.getHtmlSearchBars();
 		slearch.getPseudoSearchBars();
 		slearch.mapActions();
+		console.log("slearch initialized");
 	}
 
 };
@@ -86,11 +93,12 @@ var slearch = {
 // Initialize
 var startSlearch = function() {
 	console.log(document.readyState);
-	if (document.readyState.match(/complete|loaded/gi)) {
+	attemptsCurr++;
+	if (document.readyState.match(/complete|loaded/gi) || attemptsCurr >= attemptsMax) {
 		slearch.init();
 		window.clearInterval(attemptsDo);
 	}
 };
-var attemptsMax = 10;
+var attemptsMax = 100;
 var attemptsCurr = 0;
 var attemptsDo = window.setInterval(startSlearch, 400);
