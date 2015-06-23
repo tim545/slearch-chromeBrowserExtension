@@ -3,11 +3,18 @@
   "version": "0.0.1",
   "manifest_version": 2,
   "description": "Creates a shortcut on any web page which opens the first available search field by typing the '/' key",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "page_action": {
+    "default_icon": "slearch.png",
+    "default_title": "Slearch"
+  },
+  "permissions": ["activeTab"],
   "content_scripts" : [{
-    "matches": ["http://*/*"],
+    "matches": ["*://*/*"],
     "match_about_blank": true,
     "all_frames": true,
-    "js": ["slearch.js"],
-    "run_at": "document_idle"
+    "js": ["slearch.js"]
   }]
 }

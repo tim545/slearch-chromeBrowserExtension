@@ -55,13 +55,6 @@ var slearch = {
 		if (validSearchBar) {
 			slearch.bars.push(searchBar);
 		}
-		// 
-		// For debug. TODO: delete
-		if (slearch.bars.length > 0) {
-			console.log("There are "+ slearch.bars.length +" search bars on this page:", slearch.bars);
-		} else {
-			console.log("No search bars found");
-		}
 	},
 
 	// When a user pressed the '/' key we want to highlight a search bar
@@ -82,23 +75,29 @@ var slearch = {
 	},
 
 	init: function() {
+		// Run all initialization methods
 		slearch.getHtmlSearchBars();
 		slearch.getPseudoSearchBars();
 		slearch.mapActions();
-		console.log("slearch initialized");
+		// Show page icon if active
+		if (slearch.bars.length > 0) {
+			chrome.runtime.sendMessage({hasSearchBars: true});
+		}
 	}
 
 };
 
+slearch.init();
+
 // Initialize
 var startSlearch = function() {
-	console.log(document.readyState);
 	attemptsCurr++;
 	if (document.readyState.match(/complete|loaded/gi) || attemptsCurr >= attemptsMax) {
 		slearch.init();
 		window.clearInterval(attemptsDo);
 	}
 };
+// Prevent infinite loop by starting with a finite number of attempts
 var attemptsMax = 100;
 var attemptsCurr = 0;
 var attemptsDo = window.setInterval(startSlearch, 400);
