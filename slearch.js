@@ -98,6 +98,6 @@ var startSlearch = function() {
 	}
 };
 // Prevent infinite loop by starting with a finite number of attempts
-var attemptsMax = 100;
+var attemptsMax = 10;
 var attemptsCurr = 0;
 var attemptsDo = window.setInterval(startSlearch, 400);
