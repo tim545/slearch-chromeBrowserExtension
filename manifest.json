@@ -1,18 +1,11 @@
 {
   "name": "Slearch",
   "version": "0.0.1",
-  "manifest_version": 2,
-  "description": "Creates a shortcut on any web page which opens the first available search field by typing the '/' key",
+  "manifest_version": 1,
+  "description": "Adds a shortcut to any web page which opens the first available search field by typing the \"/\" key",
   "icons": {
-    "48": "slearch48.png"
-  },
-  "background": {
-    "scripts": ["background.js"],
-    "persistent": false
-  },
-  "page_action": {
-    "default_icon": "slearch.png",
-    "default_title": "Slearch"
+    "48": "slearch48.png",
+    "120": "slearch120.png"
   },
   "permissions": ["activeTab"],
   "content_scripts" : [{
