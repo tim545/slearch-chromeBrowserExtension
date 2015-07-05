@@ -33,6 +33,7 @@ var slearch = {
 			sbAtttr.push(sb.id);
 			sbAtttr.push(sb.placeholder);
 			sbAtttr.push(sb.value);
+			sbAtttr.push(sb.type);
 			if (sb.getAttribute("aria-label") != null) sbAtttr.push(sb.getAttribute("aria-label"));
 			for (var i = 0; i < sbAtttr.length; i++) {
 				var attribute = sbAtttr[i];
