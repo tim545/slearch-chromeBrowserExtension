@@ -4,6 +4,7 @@
   "manifest_version": 2,
   "description": "Adds a shortcut to any web page which opens the first available search field by typing the \"/\" key",
   "icons": {
+    "16": "slearch16.png",
     "48": "slearch48.png",
     "120": "slearch120.png"
   },
