@@ -1,5 +1,8 @@
 "use strict";
 
+// DEBUG ONLY: Set to `true` to log info
+const DEBUG_MODE = false;
+
 // TODO: Make sure there are no key mappings to "/" already, if so quit.
 
 // Our awesome Object
@@ -22,11 +25,15 @@ var slearch = {
 	// Old school 'search' bars
 	getPseudoSearchBars: function() {
 		var pseudoSearchBars = document.querySelectorAll("input[type='text']");
+		if (DEBUG_MODE) console.log("queried text fields: ", typeof pseudoSearchBars, pseudoSearchBars);
 		if (pseudoSearchBars == null) return;
-		// Build the "pseudo search bars list" by looking for a relevant className
+		// Build the "pseudo search bars list" by looking for relevant attribute values
 		for (var i = 0; i < pseudoSearchBars.length; i++) {
-			var sb = pseudoSearchBars[i];
+			// `sb` is the current search bar
+			var sb = pseudoSearchBars.item(i);
+			// The match maker tests each attribute
 			var matchMaker = /search|q/gi;
+			// Array of attributes to test, and determine if it is a search bar or not
 			var sbAtttr = [];
 			sbAtttr.push(sb.className);
 			sbAtttr.push(sb.name);
@@ -35,6 +42,8 @@ var slearch = {
 			sbAtttr.push(sb.value);
 			sbAtttr.push(sb.type);
 			if (sb.getAttribute("aria-label") != null) sbAtttr.push(sb.getAttribute("aria-label"));
+			if (DEBUG_MODE) console.log("search bar ", i, " attributes: ", sbAtttr);
+			// If an attribute is matched by the match maker, add it to the list
 			for (var i = 0; i < sbAtttr.length; i++) {
 				var attribute = sbAtttr[i];
 				if (attribute.match(matchMaker)) {
@@ -96,26 +105,14 @@ var slearch = {
 		// Run all initialization methods
 		slearch.getHtmlSearchBars();
 		slearch.getPseudoSearchBars();
-		slearch.mapActions();
-		// Show page icon if active
+		// Activate listeners only if search bars are found
 		if (slearch.bars.length > 0) {
-			chrome.runtime.sendMessage({hasSearchBars: true});
+			slearch.mapActions();
 		}
+		if (DEBUG_MODE) console.log("Slearch initialized: ", slearch.bars);
 	}
 
 };
 
+// Start
 slearch.init();
-
-// Initialize
-var startSlearch = function() {
-	attemptsCurr++;
-	if (document.readyState.match(/complete|loaded/gi) || attemptsCurr >= attemptsMax) {
-		slearch.init();
-		window.clearInterval(attemptsDo);
-	}
-};
-// Prevent infinite loop by starting with a finite number of attempts
-var attemptsMax = 10;
-var attemptsCurr = 0;
-var attemptsDo = window.setInterval(startSlearch, 400);
