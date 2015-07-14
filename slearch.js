@@ -58,19 +58,36 @@ var slearch = {
 		}
 	},
 
+	// Check an event object to make sure it is a user clicking '/' key
+	keyCheck: function(e) {
+		if (
+			e.keyCode === 47
+			|| e.charCode === 47
+			|| e.key === "AKEYCODE_SLASH"
+			|| e.key === "VK_DIVIDE"
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	},
+
 	// When a user pressed the '/' key we want to highlight a search bar
 	mapActions: function() {
 		window.onkeypress = function(e) {
-			if (e.keyCode === 47 || e.charCode === 47 || e.key === "AKEYCODE_SLASH" || e.key === "VK_DIVIDE") {
-				e.preventDefault();
-				e.stopPropagation();
-				// Focus on the first search bar found
-				// (First search bar is always used as it's assumed the best)
-				var bar = slearch.bars[0];
-				if (bar === undefined) return false;
-				bar.focus();
-				// Move the window to the now focused input
-				window.scroll(0, (bar.offsetTop - 50));
+			if (slearch.keyCheck(e) && !e.target.nodeName.match(/INPUT/gi)) {
+					// Prevent default
+					e.preventDefault();
+					e.stopPropagation();
+					// Focus on the first search bar found
+					// (First search bar is always used as it's assumed the best)
+					var bar = slearch.bars[0];
+					// Exit if there are no search bars
+					if (bar === undefined) return false;
+					// Focus on the search bar
+					bar.focus();
+					// Move the window to the now focused input
+					window.scroll(0, (bar.offsetTop - 50));
 			}
 		};
 	},
