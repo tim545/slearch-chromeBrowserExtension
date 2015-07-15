@@ -6,7 +6,7 @@
   "icons": {
     "16": "slearch16.png",
     "48": "slearch48.png",
-    "120": "slearch120.png"
+    "128": "slearch128.png"
   },
   "permissions": ["activeTab"],
   "content_scripts" : [{
