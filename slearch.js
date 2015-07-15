@@ -14,6 +14,7 @@ var slearch = {
 	// HTML5 search inputs
 	getHtmlSearchBars: function() {
 		var Html5SearchBars = document.querySelectorAll("[type='search']");
+		if (DEBUG_MODE) console.log("queried HTML5 search fields: ", typeof Html5SearchBars, Html5SearchBars);
 		if (Html5SearchBars == null) return;
 		// Add search bars to list
 		for (var i = 0; i < Html5SearchBars.length; i++) {
@@ -44,8 +45,8 @@ var slearch = {
 			if (sb.getAttribute("aria-label") != null) sbAtttr.push(sb.getAttribute("aria-label"));
 			if (DEBUG_MODE) console.log("search bar ", i, " attributes: ", sbAtttr);
 			// If an attribute is matched by the match maker, add it to the list
-			for (var i = 0; i < sbAtttr.length; i++) {
-				var attribute = sbAtttr[i];
+			for (var a = 0; a < sbAtttr.length; a++) {
+				var attribute = sbAtttr[a];
 				if (attribute.match(matchMaker)) {
 					this.addSearchBar(sb);
 				}
@@ -84,6 +85,7 @@ var slearch = {
 	// When a user pressed the '/' key we want to highlight a search bar
 	mapActions: function() {
 		window.onkeypress = function(e) {
+			if (DEBUG_MODE) console.log("key event target: ", e);
 			if (slearch.keyCheck(e) && !e.target.nodeName.match(/INPUT/gi)) {
 					// Prevent default
 					e.preventDefault();
@@ -102,6 +104,7 @@ var slearch = {
 	},
 
 	init: function() {
+		if (DEBUG_MODE) console.log("Slearch start initialize");
 		// Run all initialization methods
 		slearch.getHtmlSearchBars();
 		slearch.getPseudoSearchBars();
