@@ -83,10 +83,10 @@ var slearch = {
 	},
 
 	// When a user pressed the '/' key we want to highlight a search bar
-	mapActions: function() {
-		window.onkeypress = function(e) {
-			if (DEBUG_MODE) console.log("key event target: ", e);
-			if (slearch.keyCheck(e) && !e.target.nodeName.match(/INPUT/gi)) {
+	mapActions: function(e) {
+		return function(e) {
+			if ( slearch.keyCheck(e) && !e.target.nodeName.match(/INPUT|DIV|TEXTAREA|SELECET/gi) ) {
+					if (DEBUG_MODE) console.log("key event target: ", e);
 					// Prevent default
 					e.preventDefault();
 					e.stopPropagation();
@@ -109,8 +109,10 @@ var slearch = {
 		slearch.getHtmlSearchBars();
 		slearch.getPseudoSearchBars();
 		// Activate listeners only if search bars are found
+		if (DEBUG_MODE) console.log("found ", slearch.bars.length, " search bars");
 		if (slearch.bars.length > 0) {
-			slearch.mapActions();
+			if (DEBUG_MODE) console.log("map slearch actions");
+			window.onkeypress = slearch.mapActions();
 		}
 		if (DEBUG_MODE) console.log("Slearch initialized: ", slearch.bars);
 	}
