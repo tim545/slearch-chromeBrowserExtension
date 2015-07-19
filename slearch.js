@@ -105,6 +105,9 @@ var slearch = {
 
 	init: function() {
 		if (DEBUG_MODE) console.log("Slearch start initialize");
+		if (listener) {
+			window.removeEventListener('onkeypress', listener);
+		}
 		// Run all initialization methods
 		slearch.getHtmlSearchBars();
 		slearch.getPseudoSearchBars();
@@ -112,7 +115,9 @@ var slearch = {
 		if (DEBUG_MODE) console.log("found ", slearch.bars.length, " search bars");
 		if (slearch.bars.length > 0) {
 			if (DEBUG_MODE) console.log("map slearch actions");
-			window.onkeypress = slearch.mapActions();
+			// window.addEventListener('onkeypress', slearch.mapActions());
+			var listener = slearch.mapActions();
+			window.onkeypress = listener;
 		}
 		if (DEBUG_MODE) console.log("Slearch initialized: ", slearch.bars);
 	}
