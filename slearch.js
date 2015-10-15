@@ -11,8 +11,18 @@ var slearch = {
 	// Store all the search bars we find in here
 	bars: [],
 
+	// Support page owners adding a [slearch] attribute to inputs
+	getSlearchBar: function() {
+		var slearchBar = document.querySelectorAll("[slearch]");
+		if (slearchBar.length > 0) {
+			if (slearchBar[0].tagName.match(/INPUT/)) {
+				slearch.bars.unshift(slearchBar[0]);
+			}
+		}
+	},
+
 	// HTML5 search inputs
-	getHtmlSearchBars: function() {
+	getHtml5SearchBars: function() {
 		var Html5SearchBars = document.querySelectorAll("[type='search']");
 		if (DEBUG_MODE) console.log("queried HTML5 search fields: ", typeof Html5SearchBars, Html5SearchBars);
 		if (Html5SearchBars == null) return;
@@ -109,8 +119,9 @@ var slearch = {
 			window.removeEventListener('onkeypress', listener);
 		}
 		// Run all initialization methods
-		slearch.getHtmlSearchBars();
+		slearch.getHtml5SearchBars();
 		slearch.getPseudoSearchBars();
+		slearch.getSlearchBar(); // Do this last, so if one is found it is added to the top
 		// Activate listeners only if search bars are found
 		if (DEBUG_MODE) console.log("found ", slearch.bars.length, " search bars");
 		if (slearch.bars.length > 0) {

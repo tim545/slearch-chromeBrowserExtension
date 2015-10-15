@@ -9,7 +9,11 @@ This project has no dependencies so installation is simple, clone the project to
 
 ### Known Issues
 
-It does not work on all pages, this might be because the matching criteria fails to find it or because the search bar is hidden behind a JavaScript method which does not trigger when the search bar is focused. Plus others in the [issues](https://github.com/tim545/slearch-chromeBrowserExtension/issues) section. 
+It does not work on all pages, this might be because the matching criteria fails to find it or because the search bar is hidden behind a JavaScript method which does not trigger when the search bar is focused. Plus others in the [issues](https://github.com/tim545/slearch-chromeBrowserExtension/issues) section.
+
+### For Developers/Publishers
+
+If you maintain a website and would like the plugin to target a specific input on your page then you can hook into the selection by adding a `slearch` attribute to any `input` element, that input will then be used instead of any other search bars found.
 
 ### Contributing
 
