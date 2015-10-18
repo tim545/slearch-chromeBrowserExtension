@@ -1,7 +1,7 @@
 "use strict";
 
 // DEBUG ONLY: Set to `true` to log info
-const DEBUG_MODE = false;
+const DEBUG_MODE = true;
 
 // TODO: Make sure there are no key mappings to "/" already, if so quit.
 
@@ -78,39 +78,63 @@ var slearch = {
 		}
 	},
 
-	// Check an event object to make sure it is a user clicking '/' key
-	keyCheck: function(e) {
-		if (
-			e.keyCode === 47
-			|| e.charCode === 47
-			|| e.key === "AKEYCODE_SLASH"
-			|| e.key === "VK_DIVIDE"
-		) {
-			return true;
-		} else {
-			return false;
+	// Validations as a service
+	validate: {
+		// Keys the user has pressed
+		key: {
+			// Check an event object to make sure it is a user clicking '/' key
+			slash: function(e) {
+				if ( e.keyCode === 47 || e.charCode === 47 || e.key === "AKEYCODE_SLASH" || e.key === "VK_DIVIDE" ) { return true; }
+				else { return false; }
+			},
+			// Test for the 'esc' key
+			esc: function(e) {
+				if ( e.keyCode === 27 ) { return true; }
+				else { return false; }
+			}
+		},
+		// Event targets
+		target: {
+			// Test if the target is an elements the user could be typing into in order to search
+			searchable: function(e) {
+				if (e.target.nodeName.match(/INPUT|DIV|TEXTAREA|SELECET/gi)) { return true; }
+				else { return false; }
+			}
 		}
 	},
 
-	// When a user pressed the '/' key we want to highlight a search bar
-	mapActions: function(e) {
-		return function(e) {
-			if ( slearch.keyCheck(e) && !e.target.nodeName.match(/INPUT|DIV|TEXTAREA|SELECET/gi) ) {
-					if (DEBUG_MODE) console.log("key event target: ", e);
-					// Prevent default
-					e.preventDefault();
-					e.stopPropagation();
-					// Focus on the first search bar found
-					// (First search bar is always used as it's assumed the best)
-					var bar = slearch.bars[0];
-					// Exit if there are no search bars
-					if (bar === undefined) return false;
-					// Focus on the search bar
-					bar.focus();
-					// Move the window to the now focused input
-					window.scroll(0, (bar.offsetTop - 50));
-			}
-		};
+	// Handle the keyPress listener set in the init function
+	mapActions: {
+		window: function() {
+			return function(e) {
+				console.log(e.keyCode);
+				// When a user pressed the '/' key we want to highlight a search bar
+				if ( slearch.validate.key.slash(e) && !slearch.validate.target.searchable(e) ) {
+						if (DEBUG_MODE) console.log("key event target: ", e);
+						// Prevent default
+						e.preventDefault();
+						e.stopPropagation();
+						// Focus on the first search bar found
+						// (First search bar is always used as it's assumed the best)
+						var bar = slearch.bars[0];
+						// Exit if there are no search bars
+						if (bar === undefined) return false;
+						// Focus on the search bar
+						bar.focus();
+						// Move the window to the now focused input
+						window.scroll(0, (bar.offsetTop - 50));
+				}
+			};
+		},
+		searchbar: function() {
+			return function(e) {
+				// When user presses the esc key, a focus input should un-focus
+				if (slearch.validate.key.esc(e) && slearch.validate.target.searchable(e)) {
+					if (DEBUG_MODE) console.log("Blur the current search bar");
+					e.target.blur();
+				}
+			};
+		}
 	},
 
 	init: function() {
@@ -127,8 +151,10 @@ var slearch = {
 		if (slearch.bars.length > 0) {
 			if (DEBUG_MODE) console.log("map slearch actions");
 			// window.addEventListener('onkeypress', slearch.mapActions());
-			var listener = slearch.mapActions();
+			var listener = slearch.mapActions.window();
 			window.onkeypress = listener;
+			// Search bar listener
+			slearch.bars[0].onkeydown = slearch.mapActions.searchbar();
 		}
 		if (DEBUG_MODE) console.log("Slearch initialized: ", slearch.bars);
 	}

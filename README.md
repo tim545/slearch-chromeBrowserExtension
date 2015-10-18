@@ -9,7 +9,11 @@ This project has no dependencies so installation is simple, clone the project to
 
 ### Known Issues
 
-It does not work on all pages, this might be because the matching criteria fails to find it or because the search bar is hidden behind a JavaScript method which does not trigger when the search bar is focused. Plus others in the [issues](https://github.com/tim545/slearch-chromeBrowserExtension/issues) section.
+It does not work on all pages, this is because it sometimes fails to find a search bar it can use if it is hidden behind a JavaScript method which does not trigger when the search bar is focused or it's not accessible. Plus others in the [issues](https://github.com/tim545/slearch-chromeBrowserExtension/issues) section.
+
+### Other shortcuts added
+
+While the search bar is focused you can also pres `esc` which will un-focus the search bar.
 
 ### For Developers/Publishers
 
