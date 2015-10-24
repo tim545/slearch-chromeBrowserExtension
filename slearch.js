@@ -107,7 +107,6 @@ var slearch = {
 	mapActions: {
 		window: function() {
 			return function(e) {
-				console.log(e.keyCode);
 				// When a user pressed the '/' key we want to highlight a search bar
 				if ( slearch.validate.key.slash(e) && !slearch.validate.target.searchable(e) ) {
 						if (DEBUG_MODE) console.log("key event target: ", e);
