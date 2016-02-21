@@ -24,12 +24,28 @@ var slearch = {
 	// HTML5 search inputs
 	getHtml5SearchBars: function() {
 		var Html5SearchBars = document.querySelectorAll("[type='search']");
-		if (DEBUG_MODE) console.log("queried HTML5 search fields: ", typeof Html5SearchBars, Html5SearchBars);
+		if (DEBUG_MODE) console.log("queried HTML5 search fields: ", Html5SearchBars);
 		if (Html5SearchBars == null) return;
 		// Add search bars to list
 		for (var i = 0; i < Html5SearchBars.length; i++) {
 			var sb = Html5SearchBars[i];
-			this.addSearchBar(sb);
+
+			var ignore = /mobile/gi;
+
+			// Build a string of attributes in the html element to test for keywords
+			var sbAttrs = '';
+			sbAttrs+= sb.className+'-';
+			sbAttrs+= sb.name+'-';
+			sbAttrs+= sb.id+'-';
+			sbAttrs+= sb.placeholder+'-';
+			sbAttrs+= sb.value+'-';
+			sbAttrs+= sb.type;
+			if (sb.getAttribute("aria-label")) sbAttrs+= '-'+sb.getAttribute("aria-label");
+
+			if (!sbAttrs.match(ignore)) {
+				this.addSearchBar(sb);
+			}
+
 		}
 	},
 
@@ -44,7 +60,7 @@ var slearch = {
 			var sb = pseudoSearchBars[i];
 
 			// The match maker tests each attribute
-			var include = /search|keyword|query|s|k|q/gi;
+			var include = /search|keyword|query|term|s|k|q/gi;
 			var ignore = /mobile/gi;
 
 			// Build a string of attributes in the html element to test for keywords

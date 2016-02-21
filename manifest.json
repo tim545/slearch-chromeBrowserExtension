@@ -1,6 +1,6 @@
 {
   "name": "Slearch",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "manifest_version": 2,
   "description": "Adds a shortcut to any web page which opens the first available search field by typing the \"/\" key",
   "icons": {
