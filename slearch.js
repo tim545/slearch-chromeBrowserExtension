@@ -59,14 +59,6 @@ var slearch = {
 
 			if (DEBUG_MODE) console.log("search bar ", i, " attributes: ", sbAttrs);
 
-			// If an attribute is matched by the match maker, add it to the list
-			// for (var a = 0; a < sbAtttr.length; a++) {
-			// 	var attribute = sbAtttr[a];
-			// 	if (attribute.match(matchMaker)) {
-			// 		this.addSearchBar(sb);
-			// 	}
-			// }
-
 			if (DEBUG_MODE) {
 				console.log('sbAttrs match include -', sbAttrs.match(include));
 				console.log('sbAttrs match ignore -', sbAttrs.match(ignore));
@@ -164,7 +156,6 @@ var slearch = {
 		if (DEBUG_MODE) console.log("found ", slearch.bars.length, " search bars");
 		if (slearch.bars.length > 0) {
 			if (DEBUG_MODE) console.log("map slearch actions");
-			// window.addEventListener('onkeypress', slearch.mapActions());
 			var listener = slearch.mapActions.window();
 			window.onkeypress = listener;
 			// Search bar listener
