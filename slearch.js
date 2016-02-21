@@ -1,7 +1,7 @@
 "use strict";
 
 // DEBUG ONLY: Set to `true` to log info
-const DEBUG_MODE = false;
+const DEBUG_MODE = true;
 
 // TODO: Make sure there are no key mappings to "/" already, if so quit.
 
@@ -36,31 +36,46 @@ var slearch = {
 	// Old school 'search' bars
 	getPseudoSearchBars: function() {
 		var pseudoSearchBars = document.querySelectorAll("input[type='text']");
-		if (DEBUG_MODE) console.log("queried text fields: ", typeof pseudoSearchBars, pseudoSearchBars);
+		if (DEBUG_MODE) console.log("queried text fields: ", pseudoSearchBars);
 		if (pseudoSearchBars == null) return;
 		// Build the "pseudo search bars list" by looking for relevant attribute values
 		for (var i = 0; i < pseudoSearchBars.length; i++) {
 			// `sb` is the current search bar
-			var sb = pseudoSearchBars.item(i);
+			var sb = pseudoSearchBars[i];
+
 			// The match maker tests each attribute
-			var matchMaker = /search|q/gi;
-			// Array of attributes to test, and determine if it is a search bar or not
-			var sbAtttr = [];
-			sbAtttr.push(sb.className);
-			sbAtttr.push(sb.name);
-			sbAtttr.push(sb.id);
-			sbAtttr.push(sb.placeholder);
-			sbAtttr.push(sb.value);
-			sbAtttr.push(sb.type);
-			if (sb.getAttribute("aria-label") != null) sbAtttr.push(sb.getAttribute("aria-label"));
-			if (DEBUG_MODE) console.log("search bar ", i, " attributes: ", sbAtttr);
+			var include = /search|keyword|query|s|k|q/gi;
+			var ignore = /mobile/gi;
+
+			// Build a string of attributes in the html element to test for keywords
+			var sbAttrs = '';
+			sbAttrs+= sb.className+'-';
+			sbAttrs+= sb.name+'-';
+			sbAttrs+= sb.id+'-';
+			sbAttrs+= sb.placeholder+'-';
+			sbAttrs+= sb.value+'-';
+			sbAttrs+= sb.type;
+			if (sb.getAttribute("aria-label")) sbAttrs+= '-'+sb.getAttribute("aria-label");
+
+			if (DEBUG_MODE) console.log("search bar ", i, " attributes: ", sbAttrs);
+
 			// If an attribute is matched by the match maker, add it to the list
-			for (var a = 0; a < sbAtttr.length; a++) {
-				var attribute = sbAtttr[a];
-				if (attribute.match(matchMaker)) {
-					this.addSearchBar(sb);
-				}
+			// for (var a = 0; a < sbAtttr.length; a++) {
+			// 	var attribute = sbAtttr[a];
+			// 	if (attribute.match(matchMaker)) {
+			// 		this.addSearchBar(sb);
+			// 	}
+			// }
+
+			if (DEBUG_MODE) {
+				console.log('sbAttrs match include -', sbAttrs.match(include));
+				console.log('sbAttrs match ignore -', sbAttrs.match(ignore));
 			}
+
+			if (sbAttrs.match(include) && !sbAttrs.match(ignore)) {
+				this.addSearchBar(sb);
+			}
+
 		}
 	},
 
