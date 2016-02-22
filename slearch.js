@@ -1,7 +1,7 @@
 "use strict";
 
 // DEBUG ONLY: Set to `true` to log info
-const DEBUG_MODE = true;
+const DEBUG_MODE = false;
 
 // TODO: Make sure there are no key mappings to "/" already, if so quit.
 
