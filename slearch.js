@@ -132,11 +132,19 @@ var slearch = {
 			return function(e) {
 				// When a user pressed the '/' key we want to highlight a search bar
 				if ( slearch.validate.key.slash(e) && !slearch.validate.target.searchable(e) ) {
-						if (DEBUG_MODE) console.log("key event target: ", e);
-						// Prevent default
-						e.preventDefault();
-						e.stopPropagation();
-						// Focus on the first search bar found
+					if (DEBUG_MODE) console.log("key event target: ", e);
+					// Prevent default
+					e.preventDefault();
+					e.stopPropagation();
+
+					// Find available search bars
+					slearch.getHtml5SearchBars();
+					slearch.getPseudoSearchBars();
+					slearch.getSlearchBar(); // Do this last, so if one is found it is added to the top
+
+					// Focus on the first search bar found
+					if (DEBUG_MODE) console.log("found ", slearch.bars.length, " search bars: ", slearch.bars);
+					if (slearch.bars.length > 0) {
 						// (First search bar is always used as it's assumed the best)
 						var bar = slearch.bars[0];
 						// Exit if there are no search bars
@@ -145,6 +153,9 @@ var slearch = {
 						bar.focus();
 						// Move the window to the now focused input
 						window.scroll(0, (bar.offsetTop - 50));
+						// Attach search bar listener
+						slearch.bars[0].onkeydown = slearch.mapActions.searchbar();
+					}
 				}
 			};
 		},
@@ -164,20 +175,11 @@ var slearch = {
 		if (listener) {
 			window.removeEventListener('onkeypress', listener);
 		}
-		// Run all initialization methods
-		slearch.getHtml5SearchBars();
-		slearch.getPseudoSearchBars();
-		slearch.getSlearchBar(); // Do this last, so if one is found it is added to the top
-		// Activate listeners only if search bars are found
-		if (DEBUG_MODE) console.log("found ", slearch.bars.length, " search bars");
-		if (slearch.bars.length > 0) {
-			if (DEBUG_MODE) console.log("map slearch actions");
-			var listener = slearch.mapActions.window();
-			window.onkeypress = listener;
-			// Search bar listener
-			slearch.bars[0].onkeydown = slearch.mapActions.searchbar();
-		}
-		if (DEBUG_MODE) console.log("Slearch initialized: ", slearch.bars);
+		// Map slearch actions
+		if (DEBUG_MODE) console.log("map slearch actions");
+		var listener = slearch.mapActions.window();
+		window.onkeypress = listener;
+		if (DEBUG_MODE) console.log("Slearch initialized: ");
 	}
 
 };
