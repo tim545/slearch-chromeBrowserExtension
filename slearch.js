@@ -1,7 +1,7 @@
 "use strict";
 
 // DEBUG ONLY: Set to `true` to log info
-const DEBUG_MODE = false;
+var DEBUG_MODE = false;
 
 // TODO: Make sure there are no key mappings to "/" already, if so quit.
 
@@ -21,43 +21,15 @@ var slearch = {
 		}
 	},
 
-	// HTML5 search inputs
-	getHtml5SearchBars: function() {
-		var Html5SearchBars = document.querySelectorAll("[type='search']");
-		if (DEBUG_MODE) console.log("queried HTML5 search fields: ", Html5SearchBars);
-		if (Html5SearchBars == null) return;
-		// Add search bars to list
-		for (var i = 0; i < Html5SearchBars.length; i++) {
-			var sb = Html5SearchBars[i];
-
-			var ignore = /mobile/gi;
-
-			// Build a string of attributes in the html element to test for keywords
-			var sbAttrs = '';
-			sbAttrs+= sb.className+'-';
-			sbAttrs+= sb.name+'-';
-			sbAttrs+= sb.id+'-';
-			sbAttrs+= sb.placeholder+'-';
-			sbAttrs+= sb.value+'-';
-			sbAttrs+= sb.type;
-			if (sb.getAttribute("aria-label")) sbAttrs+= '-'+sb.getAttribute("aria-label");
-
-			if (!sbAttrs.match(ignore)) {
-				this.addSearchBar(sb);
-			}
-
-		}
-	},
-
-	// Old school 'search' bars
-	getPseudoSearchBars: function() {
-		var pseudoSearchBars = document.querySelectorAll("input[type='text']");
-		if (DEBUG_MODE) console.log("queried text fields: ", pseudoSearchBars);
-		if (pseudoSearchBars == null) return;
+	// Find input fields on the page which appear to be site search bars
+	getSearchBars: function() {
+		var searchBars = document.querySelectorAll("[type='search'], input[type='text']");
+		if (DEBUG_MODE) console.log("queried input fields: ", searchBars);
+		if (searchBars == null) return;
 		// Build the "pseudo search bars list" by looking for relevant attribute values
-		for (var i = 0; i < pseudoSearchBars.length; i++) {
+		for (var i = 0; i < searchBars.length; i++) {
 			// `sb` is the current search bar
-			var sb = pseudoSearchBars[i];
+			var sb = searchBars[i];
 
 			// The match maker tests each attribute
 			var include = /search|keyword|query|term|s|k|q/gi;
@@ -80,7 +52,11 @@ var slearch = {
 				console.log('sbAttrs match ignore -', sbAttrs.match(ignore));
 			}
 
-			if (sbAttrs.match(include) && !sbAttrs.match(ignore)) {
+			// Add HTML5 search bars
+			if (sb.type === "search" && !sbAttrs.match(ignore)) {
+				this.addSearchBar(sb);
+			// Add HTML text inputs found as search bars
+			} else if (sbAttrs.match(include) && !sbAttrs.match(ignore)) {
 				this.addSearchBar(sb);
 			}
 
@@ -138,8 +114,7 @@ var slearch = {
 					e.stopPropagation();
 
 					// Find available search bars
-					slearch.getHtml5SearchBars();
-					slearch.getPseudoSearchBars();
+					slearch.getSearchBars();
 					slearch.getSlearchBar(); // Do this last, so if one is found it is added to the top
 
 					// Focus on the first search bar found
@@ -176,10 +151,10 @@ var slearch = {
 			window.removeEventListener('onkeypress', listener);
 		}
 		// Map slearch actions
-		if (DEBUG_MODE) console.log("map slearch actions");
+		if (DEBUG_MODE) console.log("Map Slearch actions");
 		var listener = slearch.mapActions.window();
 		window.onkeypress = listener;
-		if (DEBUG_MODE) console.log("Slearch initialized: ");
+		if (DEBUG_MODE) console.log("Slearch initialized");
 	}
 
 };
