@@ -69,7 +69,7 @@ var slearch = {
 		// Find if the search bar already exists
 		for (var i = 0; i < slearch.bars.length; i++) {
 			var bar = slearch.bars[i]
-			if (bar === searchBar) { validSearchBar = false; }
+			if (bar === searchBar) validSearchBar = false;
 		}
 		// Add the search bar
 		if (validSearchBar) {
@@ -83,21 +83,22 @@ var slearch = {
 		key: {
 			// Check an event object to make sure it is a user clicking '/' key
 			slash: function(e) {
-				if ( e.keyCode === 47 || e.charCode === 47 || e.key === "AKEYCODE_SLASH" || e.key === "VK_DIVIDE" ) { return true; }
-				else { return false; }
+				if ( e.keyCode === 47 || e.charCode === 47 || e.key === "AKEYCODE_SLASH" || e.key === "VK_DIVIDE" ) return true;
+				else return false;
 			},
 			// Test for the 'esc' key
 			esc: function(e) {
-				if ( e.keyCode === 27 ) { return true; }
-				else { return false; }
+				if ( e.keyCode === 27 ) return true;
+				else return false;
 			}
 		},
 		// Event targets
 		target: {
-			// Test if the target is an elements the user could be typing into in order to search
-			searchable: function(e) {
-				if (e.target.nodeName.match(/INPUT|DIV|TEXTAREA|SELECET/gi)) { return true; }
-				else { return false; }
+			// Test if the target is an element the user could be typing into in order to search
+			editable: function(e) {
+				var isContentEditable = e.target.contentEditable === "true";
+				if (e.target.nodeName.match(/INPUT|DIV|TEXTAREA|SELECET/gi) || isContentEditable) return true;
+				else return false;
 			}
 		}
 	},
@@ -107,7 +108,7 @@ var slearch = {
 		window: function() {
 			return function(e) {
 				// When a user pressed the '/' key we want to highlight a search bar
-				if ( slearch.validate.key.slash(e) && !slearch.validate.target.searchable(e) ) {
+				if ( slearch.validate.key.slash(e) && !slearch.validate.target.editable(e) ) {
 					if (DEBUG_MODE) console.log("key event target: ", e);
 					// Prevent default
 					e.preventDefault();
@@ -136,8 +137,8 @@ var slearch = {
 		},
 		searchbar: function() {
 			return function(e) {
-				// When user presses the esc key, a focus input should un-focus
-				if (slearch.validate.key.esc(e) && slearch.validate.target.searchable(e)) {
+				// When user presses the esc key, a focused input should un-focus
+				if (slearch.validate.key.esc(e) && slearch.validate.target.editable(e)) {
 					if (DEBUG_MODE) console.log("Blur the current search bar");
 					e.target.blur();
 				}
