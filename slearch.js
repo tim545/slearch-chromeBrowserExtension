@@ -15,7 +15,7 @@ var slearch = {
 	getSlearchBar: function() {
 		var slearchBar = document.querySelectorAll("[slearch]");
 		if (slearchBar.length > 0) {
-			if (slearchBar[0].tagName.match(/INPUT/)) {
+			if (slearchBar[0].tagName.match(/INPUT/) && slearch.isVisible(slearchBar)) {
 				slearch.bars.unshift(slearchBar[0]);
 			}
 		}
@@ -32,7 +32,7 @@ var slearch = {
 			var sb = searchBars[i];
 
 			// The match maker tests each attribute
-			var include = /search|keyword|query|term|s|k|q/gi;
+			var include = /search|keyword|query|^s$|^k$|^q$/gi;
 			var ignore = /mobile|touch/gi;
 
 			// Build a string of attributes in the html element to test for keywords
@@ -55,12 +55,24 @@ var slearch = {
 			// Add HTML5 search bars
 			if (sb.type === "search" && !sbAttrs.match(ignore)) {
 				this.addSearchBar(sb);
+				if (DEBUG_MODE) console.log("added html5 search bar: ", sb);
 			// Add HTML text inputs found as search bars
 			} else if (sbAttrs.match(include) && !sbAttrs.match(ignore)) {
 				this.addSearchBar(sb);
+				if (DEBUG_MODE) console.log("added search bar: ", sb);
 			}
 
 		}
+	},
+
+	// Check that a search bar is actually visible on the screen
+	isVisible: function(element) {
+		var el = element;
+		var visible = true;
+		if (el.clientHeight <= 0 && el.clientWidth <= 0 && el.clientTop <= 0 && el.clientLeft <= 0) {
+			visible = false;
+		}
+		return visible;
 	},
 
 	// Adds a newly found search bar to the object store
@@ -71,6 +83,8 @@ var slearch = {
 			var bar = slearch.bars[i]
 			if (bar === searchBar) validSearchBar = false;
 		}
+		// Check the search bar is visible to the user
+		if (!slearch.isVisible(searchBar)) validSearchBar = false;
 		// Add the search bar
 		if (validSearchBar) {
 			slearch.bars.push(searchBar);
