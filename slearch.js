@@ -23,7 +23,7 @@ var slearch = {
 
 	// Find input fields on the page which appear to be site search bars
 	getSearchBars: function() {
-		var searchBars = document.querySelectorAll("[type='search'], input[type='text']");
+		var searchBars = document.querySelectorAll("[type='search'], input[type='text'], input:not([type])");
 		if (DEBUG_MODE) console.log("queried input fields: ", searchBars);
 		if (searchBars == null) return;
 		// Build the "pseudo search bars list" by looking for relevant attribute values
