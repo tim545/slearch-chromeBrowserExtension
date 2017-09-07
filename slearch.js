@@ -33,7 +33,7 @@ var slearch = {
 
 			// The match maker tests each attribute
 			var include = /search|keyword|query|^s$|^k$|^q$/gi;
-			var ignore = /mobile|touch/gi;
+			var ignore = /mobile/gi;
 
 			// Build a string of attributes in the html element to test for keywords
 			var sbAttrs = '';
