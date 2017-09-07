@@ -69,9 +69,16 @@ var slearch = {
 	isVisible: function(element) {
 		var el = element;
 		var visible = true;
-		if (el.clientHeight <= 0 && el.clientWidth <= 0 && el.clientTop <= 0 && el.clientLeft <= 0) {
+
+		// Check if the element physically resides within the windows dimensions
+		if (el.clientHeight <= 0 && el.clientWidth <= 0 && el.clientTop <= 0 && el.clientLeft <= 0)
 			visible = false;
-		}
+
+		// Check computed CSS in case the input is not visible to the user
+		if (window.getComputedStyle(el).display === 'none') visible = false;
+		if (['hidden','collapse'].indexOf(window.getComputedStyle(el).visibility) >= 0) visible = false;
+		if (window.getComputedStyle(el).opacity == '0') visible = false;
+
 		return visible;
 	},
 
