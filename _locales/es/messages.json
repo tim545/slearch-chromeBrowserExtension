@@ -1,0 +1,8 @@
+{
+  "name": {
+    "message": "Slearch"
+  },
+  "description": {
+    "message": "Búsqueda instantánea en cualquier sitio web utilizando la tecla \"/\". Acceso directo a una página web propia barra de búsqueda."
+  }
+}
