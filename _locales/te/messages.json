@@ -1,0 +1,10 @@
+{
+  "name": {
+    "message": "Slearch",
+    "description": "Slearch"
+  },
+  "description": {
+    "message": "Instantly search on any website using the \"/\" key. Shortcut for a websites own search bar.",
+    "description": "తక్షణం \"/\" కీని ఉపయోగించి ఏదైనా వెబ్ సైట్ లో వెతకండి. వెబ్ సైట్ కోసం సత్వరమార్గం శోధన బార్ని కలిగి ఉంటుంది."
+  }
+}
