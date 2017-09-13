@@ -5,6 +5,6 @@
   },
   "description": {
     "message": "Instantly search on any website using the \"/\" key. Shortcut for a websites own search bar.",
-    "description": "חיפוש מיידי בכל אתר באמצעות מקש \"/\". קיצור עבור סרגל החיפוש של אתרי אינטרנט משלו."
+    "description": "מיד לחפש בכל אתר באמצעות מפתח \"/\". קיצור עבור סרגל החיפוש של אתרי אינטרנט משלו."
   }
 }

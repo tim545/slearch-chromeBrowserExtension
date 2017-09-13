@@ -5,6 +5,6 @@
   },
   "description": {
     "message": "Instantly search on any website using the \"/\" key. Shortcut for a websites own search bar.",
-    "description": "Recherchez instantanément sur n'importe quel site Web à l'aide de la touche \"/\". Raccourci pour une barre de recherche propre aux sites Web."
+    "description": "Recherchez instantanément sur n'importe quel site Web en utilisant la touche \"/\". Raccourci pour une barre de recherche propre aux sites Web."
   }
 }

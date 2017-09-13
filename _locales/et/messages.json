@@ -5,6 +5,6 @@
   },
   "description": {
     "message": "Instantly search on any website using the \"/\" key. Shortcut for a websites own search bar.",
-    "description": "Otsige viivitamatult mis tahes veebisaidilt, kasutades \"/\" võtmeid. Otsetee veebisaitidele oma otsinguriba."
+    "description": "Otsige koheselt mis tahes veebisaidil, kasutades klahvi \"/\". Otsetee veebisaitidele oma otsinguriba."
   }
 }

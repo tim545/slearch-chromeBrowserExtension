@@ -5,6 +5,6 @@
   },
   "description": {
     "message": "Instantly search on any website using the \"/\" key. Shortcut for a websites own search bar.",
-    "description": "\"/\" 키를 사용하여 모든 웹 사이트에서 즉시 검색하십시오. 웹 사이트 자체 검색 바의 바로 가기."
+    "description": "\"/\"키를 사용하여 모든 웹 사이트에서 즉시 검색하십시오. 웹 사이트 자체 검색 바의 바로 가기."
   }
 }
