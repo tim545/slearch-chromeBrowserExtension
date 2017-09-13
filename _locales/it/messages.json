@@ -1,0 +1,10 @@
+{
+  "name": {
+    "message": "Slearch",
+    "description": "Slearch"
+  },
+  "description": {
+    "message": "Instantly search on any website using the \"/\" key. Shortcut for a websites own search bar.",
+    "description": "Cerca istantaneamente su qualsiasi sito utilizzando il tasto \"/\". Scorciatoia per una barra di ricerca di siti web."
+  }
+}

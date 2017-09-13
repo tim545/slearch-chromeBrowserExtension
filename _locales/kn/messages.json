@@ -1,0 +1,10 @@
+{
+  "name": {
+    "message": "Slearch",
+    "description": "Slearch"
+  },
+  "description": {
+    "message": "Instantly search on any website using the \"/\" key. Shortcut for a websites own search bar.",
+    "description": "\"/\" ಕೀಲಿಯನ್ನು ಬಳಸಿ ಯಾವುದೇ ವೆಬ್ಸೈಟ್ನಲ್ಲಿ ತಕ್ಷಣ ಹುಡುಕಿ. ವೆಬ್ಸೈಟ್ಗಳ ಸ್ವಂತ ಹುಡುಕಾಟ ಪಟ್ಟಿಗಾಗಿ ಶಾರ್ಟ್ಕಟ್."
+  }
+}
