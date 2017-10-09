@@ -1,15 +1,18 @@
 "use strict";
 
 // DEBUG ONLY: Set to `true` to log info
-var DEBUG_MODE = false;
+var DEBUG_MODE = true;
 
-// TODO: Make sure there are no key mappings to "/" already, if so quit.
-
-// Our awesome Object
 var slearch = {
 
   // Store all the search bars we find in here
   bars: [],
+
+  // Position of the scroll height the last time user typed the shortcut key
+  lastScrollHeight: 0,
+
+  // Store this to know if the user has just focused the input using the shortcut
+  hasPressedShortcut: false,
 
   // Support page owners adding a [slearch] attribute to inputs
   getSlearchBar: function() {
@@ -146,6 +149,9 @@ var slearch = {
             var bar = slearch.bars[0];
             // Exit if there are no search bars
             if (bar === undefined) return false;
+            // Store the current scroll position
+            slearch.lastScrollHeight = window.scrollY;
+            slearch.hasPressedShortcut = true;
             // Focus on the search bar
             bar.focus();
             // Move the window to the now focused input
@@ -160,8 +166,12 @@ var slearch = {
       return function(e) {
         // When user presses the esc key, a focused input should un-focus
         if (slearch.validate.key.esc(e) && slearch.validate.target.editable(e)) {
-          if (DEBUG_MODE) console.log("Blur the current search bar");
+          if (DEBUG_MODE) console.log("Esc from the current search bar");
           e.target.blur();
+          // Move the window to the now focused input
+          if (slearch.hasPressedShortcut)
+            window.scroll(0, slearch.lastScrollHeight);
+          slearch.hasPressedShortcut = false;
         }
       };
     }
