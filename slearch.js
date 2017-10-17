@@ -3,13 +3,13 @@
 // DEBUG ONLY: Set to `true` to log info
 var DEBUG_MODE = false;
 
-// TODO: Make sure there are no key mappings to "/" already, if so quit.
-
-// Our awesome Object
 var slearch = {
 
   // Store all the search bars we find in here
   bars: [],
+
+  // Position of the scroll height the last time user typed the shortcut key
+  lastScrollHeight: 0,
 
   // Support page owners adding a [slearch] attribute to inputs
   getSlearchBar: function() {
@@ -56,12 +56,12 @@ var slearch = {
       if (sb.type === "search" && !sbAttrs.match(ignore)) {
         this.addSearchBar(sb);
         if (DEBUG_MODE) console.log("added html5 search bar: ", sb);
+
       // Add HTML text inputs found as search bars
       } else if (sbAttrs.match(include) && !sbAttrs.match(ignore)) {
         this.addSearchBar(sb);
         if (DEBUG_MODE) console.log("added search bar: ", sb);
       }
-
     }
   },
 
@@ -95,6 +95,7 @@ var slearch = {
     // Add the search bar
     if (validSearchBar) {
       slearch.bars.push(searchBar);
+      searchBar.onfocus = slearch.mapActions.searchBarFocusIn();
     }
   },
 
@@ -151,19 +152,28 @@ var slearch = {
             // Move the window to the now focused input
             window.scroll(0, (bar.offsetTop - 50));
             // Attach search bar listener
-            slearch.bars[0].onkeydown = slearch.mapActions.searchbar();
+            slearch.bars[0].onkeydown = slearch.mapActions.searchbarKeyDown();
           }
         }
       };
     },
-    searchbar: function() {
+    searchbarKeyDown: function() {
       return function(e) {
         // When user presses the esc key, a focused input should un-focus
         if (slearch.validate.key.esc(e) && slearch.validate.target.editable(e)) {
-          if (DEBUG_MODE) console.log("Blur the current search bar");
+          if (DEBUG_MODE) console.log("Esc from the current search bar");
           e.target.blur();
+          // Move the window to the now focused input
+          window.scroll(0, slearch.lastScrollHeight);
         }
       };
+    },
+    searchBarFocusIn() {
+      return function(e) {
+        if (DEBUG_MODE) console.log("search bar focused: ", e);
+        if (DEBUG_MODE) console.log("window.scrollY at focus: ", window.scrollY);
+        slearch.lastScrollHeight = window.scrollY;
+      }
     }
   },
 
