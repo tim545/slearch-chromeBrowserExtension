@@ -1,7 +1,7 @@
 "use strict";
 
 // DEBUG ONLY: Set to `true` to log info
-var DEBUG_MODE = true;
+var DEBUG_MODE = false;
 
 var slearch = {
 
